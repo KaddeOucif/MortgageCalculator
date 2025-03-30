@@ -10,23 +10,48 @@ export function calculateExtraPaymentScenarios(currentLoan, baseMonthlyPayment, 
     { extra: baseMonthlyPayment, label: 'Double payment', color: '#f44336' }
   ];
 
+  // Calculate standard payoff time (baseline)
+  const monthlyRate = interestRate / 100 / 12;
+  const standardPayoffMonths = calculateTimeToPayoffInMonths(currentLoan, baseMonthlyPayment, monthlyRate);
+  
   return scenarios.map(scenario => {
-    const totalMonthly = baseMonthlyPayment + scenario.extra;
-    const timeToPayoff = calculateTimeToPayoff(
-      currentLoan, 
-      totalMonthly, 
-      interestRate
-    );
-    const totalInterest = (totalMonthly * (timeToPayoff.years * 12 + timeToPayoff.months)) - currentLoan;
-    const monthsSaved = (30 * 12) - (timeToPayoff.years * 12 + timeToPayoff.months);
+    const newMonthlyPayment = baseMonthlyPayment + scenario.extra;
+    
+    // Calculate new payoff time with extra payment
+    const newPayoffMonths = calculateTimeToPayoffInMonths(currentLoan, newMonthlyPayment, monthlyRate);
+    
+    // Calculate months saved (should always be positive)
+    const monthsSaved = standardPayoffMonths - newPayoffMonths;
+    
+    // Calculate interest saved
+    const standardTotalInterest = (baseMonthlyPayment * standardPayoffMonths) - currentLoan;
+    const newTotalInterest = (newMonthlyPayment * newPayoffMonths) - currentLoan;
+    const interestSaved = standardTotalInterest - newTotalInterest;
     
     return {
       ...scenario,
-      monthlyPayment: totalMonthly,
-      timeToPayoff,
-      totalInterest,
-      interestSaved: (currentLoan * interestRate / 100 * 30) - totalInterest,
-      monthsSaved
+      monthlyPayment: newMonthlyPayment,
+      timeToPayoff: {
+        years: Math.floor(newPayoffMonths / 12),
+        months: newPayoffMonths % 12
+      },
+      monthsSaved: monthsSaved,
+      interestSaved: interestSaved
     };
   });
+}
+
+// Helper function to calculate time to payoff in months
+function calculateTimeToPayoffInMonths(loanAmount, monthlyPayment, monthlyRate) {
+  // If no interest, simple division
+  if (monthlyRate === 0) {
+    return Math.ceil(loanAmount / monthlyPayment);
+  }
+  
+  // Standard formula for time to payoff with interest
+  // ln(monthlyPayment / (monthlyPayment - loanAmount * monthlyRate)) / ln(1 + monthlyRate)
+  const numerator = Math.log(monthlyPayment / (monthlyPayment - loanAmount * monthlyRate));
+  const denominator = Math.log(1 + monthlyRate);
+  
+  return Math.ceil(numerator / denominator);
 }

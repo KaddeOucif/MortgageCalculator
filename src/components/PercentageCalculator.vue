@@ -102,7 +102,17 @@
         </div>
         
         <div class="result-card">
-          <div class="result-title">Time to Payoff</div>
+          <div class="result-title">
+            Time to Payoff
+            <span class="tooltip-icon" @mouseover="showTooltip = true" @mouseleave="showTooltip = false">?
+              <div class="tooltip-content" v-if="showTooltip">
+                <p><strong>How this is calculated:</strong></p>
+                <p>For loans with LTV > 50%, we use the mandatory amortization rate (1% or 2%).</p>
+                <p>For loans with LTV ≤ 50%, there's no mandatory amortization in Sweden, but we calculate as if you continue to make payments that would pay off the loan within your original loan term.</p>
+                <p>This calculation simulates month-by-month payments, reducing the principal each month until the loan reaches zero.</p>
+              </div>
+            </span>
+          </div>
           <div class="result-value">{{ calculatedResults.timeToPayoff.years }}y {{ calculatedResults.timeToPayoff.months }}m</div>
           <div class="result-subtitle" v-if="calculatedResults.monthsSaved > 0">
             Save {{ Math.floor(calculatedResults.monthsSaved / 12) }}y {{ calculatedResults.monthsSaved % 12 }}m
@@ -139,7 +149,8 @@ export default {
     return {
       percentageAmount: 100,
       directLoanAmount: 0,
-      calculatorMode: 'percentage' // 'percentage' or 'amount'
+      calculatorMode: 'percentage', // 'percentage' or 'amount'
+      showTooltip: false
     };
   },
   created() {
@@ -227,18 +238,28 @@ export default {
       const interestRate = this.values.interestRate;
       const monthlyRate = interestRate / 100 / 12;
       
-      // Calculate monthly amortization
-      const monthlyAmortization = (loanAmount * amortizationRate / 100) / 12;
+      // Calculate monthly amortization (ensure minimum amortization for payoff calculation)
+      const mandatoryMonthlyAmortization = (loanAmount * amortizationRate / 100) / 12;
       
       // Calculate monthly interest
       const monthlyInterest = loanAmount * monthlyRate;
       
-      // Total monthly payment
-      const newMonthlyPayment = monthlyAmortization + monthlyInterest;
+      // For payment calculation, use mandatory amortization
+      const newMonthlyPayment = mandatoryMonthlyAmortization + monthlyInterest;
+      
+      // For time to payoff calculation, ensure there's always some principal repayment
+      // Use standard mortgage formula if no mandatory amortization
+      let payoffMonthlyPayment = newMonthlyPayment;
+      if (amortizationRate === 0) {
+        // Calculate payment based on the actual loan term from inputs
+        const loanTermMonths = this.values.loanTermYears * 12;
+        payoffMonthlyPayment = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, loanTermMonths) / 
+                              (Math.pow(1 + monthlyRate, loanTermMonths) - 1);
+      }
       
       const timeToPayoff = calculateTimeToPayoff(
         loanAmount,
-        newMonthlyPayment,
+        payoffMonthlyPayment,
         interestRate
       );
       
@@ -415,5 +436,48 @@ input[type="range"] {
 .result-subtitle {
   font-size: 0.75rem;
   color: #64748b;
+}
+
+.tooltip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #64748b;
+  color: white;
+  font-size: 10px;
+  margin-left: 4px;
+  cursor: help;
+  position: relative;
+}
+
+.tooltip-content {
+  position: absolute;
+  bottom: 24px;
+  right: -12px;
+  width: 300px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  z-index: 10;
+  font-size: 0.75rem;
+  color: #334155;
+  text-align: left;
+}
+
+.tooltip-content p {
+  margin: 0.5rem 0;
+}
+
+.tooltip-content p:first-child {
+  margin-top: 0;
+}
+
+.tooltip-content p:last-child {
+  margin-bottom: 0;
 }
 </style>
