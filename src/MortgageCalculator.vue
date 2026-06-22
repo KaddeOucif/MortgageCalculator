@@ -363,6 +363,7 @@ export default {
   letter-spacing: -0.03em;
   margin: 0 0 0.625rem 0;
   line-height: 1.15;
+  color: inherit;
 }
 
 .header-subtitle {
