@@ -1,7 +1,7 @@
 <!-- src/components/LoanInputs.vue -->
 <template>
-    <div class="loan-inputs">
-      <h2>Loan Details</h2>
+    <div class="loan-inputs card">
+      <h2 class="card-title">Loan Details</h2>
       <div class="form-grid">
         <div class="form-group">
           <label for="originalLoanAmount">Original Loan Amount (SEK)</label>
@@ -11,7 +11,7 @@
             v-model.number="localValues.originalLoanAmount"
             @input="handleOriginalLoanChange"
           >
-          <div class="tooltip">Initial loan amount when you took the mortgage</div>
+          <div class="tooltip-hint">Initial loan amount when you took the mortgage</div>
         </div>
         
         <div class="form-group">
@@ -22,7 +22,7 @@
             v-model.number="localValues.currentLoanAmount"
             @input="handleCurrentLoanChange"
           >
-          <div class="tooltip">Your current remaining loan</div>
+          <div class="tooltip-hint">Your current remaining loan</div>
         </div>
         
         <div class="form-group">
@@ -125,32 +125,16 @@
   
   <style scoped>
   .loan-inputs {
-    background: white;
     padding: 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   
   .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.125rem;
   }
   
   .form-group {
-    margin-bottom: 1rem;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-  }
-  
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 0.25rem;
+    margin-bottom: 0;
   }
   </style>

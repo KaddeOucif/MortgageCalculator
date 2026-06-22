@@ -292,167 +292,239 @@ export default {
 
 <style scoped>
 .mortgage-calculator {
-  max-width: 1200px;
+  max-width: 1180px;
   margin: 0 auto;
 }
 
 .header {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  position: relative;
+  overflow: hidden;
   color: white;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1.5rem;
+  padding: 2.5rem 2rem;
+  border-radius: var(--radius-xl);
+  margin-bottom: 1.75rem;
+  background: linear-gradient(135deg, #312e81 0%, #4f46e5 45%, #6366f1 100%);
+  box-shadow: var(--shadow-lg);
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -5%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .header-content {
-  max-width: 800px;
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
 }
 
 .header-badge {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
   margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .header-badge svg {
-  width: 1rem;
-  height: 1rem;
+  width: 0.875rem;
+  height: 0.875rem;
   margin-right: 0.5rem;
+  opacity: 0.9;
 }
 
 .header-title {
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 700;
-  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.625rem 0;
+  line-height: 1.15;
+  color: inherit;
 }
 
 .header-subtitle {
-  font-size: 1.125rem;
-  opacity: 0.8;
+  font-size: 1rem;
+  opacity: 0.88;
   margin: 0;
+  line-height: 1.6;
+  font-weight: 400;
 }
 
 .calculator-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
 }
 
 @media (min-width: 768px) {
   .calculator-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: start;
   }
 }
 
 .tabs {
-  background: white;
-  border-radius: 0.5rem;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
 .tab-buttons {
   display: flex;
-  border-bottom: 1px solid #e2e8f0;
+  gap: 4px;
+  padding: 6px;
+  margin: 1rem 1rem 0;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
   overflow-x: auto;
 }
 
 .tab-button {
-  padding: 1rem 1.5rem;
-  background: none;
+  flex: 1;
+  min-width: fit-content;
+  padding: 0.625rem 1.25rem;
+  background: transparent;
   border: none;
+  border-radius: var(--radius-full);
   cursor: pointer;
+  font-size: 0.8125rem;
   font-weight: 500;
-  color: #64748b;
+  color: var(--color-text-muted);
   white-space: nowrap;
+  transition: color var(--transition), background var(--transition), box-shadow var(--transition);
+}
+
+.tab-button:hover {
+  color: var(--color-text);
 }
 
 .tab-button.active {
-  color: #0f172a;
-  box-shadow: inset 0 -2px 0 #0f172a;
+  color: var(--color-text);
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-sm);
 }
 
 .tab-content {
-  padding: 1.5rem;
+  padding: 1.5rem 1.75rem 1.75rem;
 }
 
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
+  padding: 1rem;
 }
 
 .modal {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  max-width: 500px;
+  background: var(--color-bg-elevated);
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  max-width: 480px;
   width: 100%;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+}
+
+.modal h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+}
+
+.modal p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
 }
 
 .drop-zone {
-  border: 2px dashed #e2e8f0;
-  border-radius: 0.5rem;
+  border: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
   padding: 2rem;
   text-align: center;
-  margin: 1rem 0;
+  margin: 1.25rem 0;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  transition: background var(--transition), border-color var(--transition);
 }
 
+.drop-zone:hover,
 .drop-zone.drag-over {
-  background-color: #f8fafc;
-  border-color: #0f172a;
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 1rem;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
 }
 
 .rename-input {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.25rem;
   margin-top: 1rem;
 }
 
 .save-btn {
-  padding: 0.5rem 1rem;
-  background: #0f172a;
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #6366f1 100%);
   color: white;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-weight: 500;
-  margin-right: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
 }
 
 .cancel-btn {
-  padding: 0.5rem 1rem;
-  background: #e2e8f0;
-  color: #0f172a;
-  border: none;
-  border-radius: 0.25rem;
+  padding: 0.625rem 1.25rem;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   font-weight: 500;
+  font-size: 0.875rem;
+  transition: background var(--transition);
 }
 
 .cancel-btn:hover {
-  background: #cbd5e1;
+  background: var(--color-border);
 }
 </style>

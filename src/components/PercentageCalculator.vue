@@ -1,19 +1,17 @@
 <template>
-  <div class="percentage-calculator">
+  <div class="percentage-calculator card">
     <div class="calculator-header">
-      <h3>Payment Calculator</h3>
-      <div class="mode-toggle">
+      <h3 class="card-title">Payment Calculator</h3>
+      <div class="mode-toggle segmented-control">
         <button 
           @click="calculatorMode = 'percentage'" 
           :class="{ active: calculatorMode === 'percentage' }"
-          class="toggle-btn"
         >
           Percentage
         </button>
         <button 
           @click="calculatorMode = 'amount'" 
           :class="{ active: calculatorMode === 'amount' }"
-          class="toggle-btn"
         >
           Amount
         </button>
@@ -283,10 +281,7 @@ export default {
 
 <style scoped>
 .percentage-calculator {
-  background: white;
   padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin-bottom: 1.5rem;
 }
 
@@ -295,33 +290,17 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.calculator-header .card-title {
+  margin-bottom: 0;
 }
 
 h3 {
   margin: 0;
-  font-size: 1.25rem;
-}
-
-.mode-toggle {
-  display: flex;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.toggle-btn {
-  padding: 0.5rem 1rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: background-color 0.2s;
-}
-
-.toggle-btn.active {
-  background: #0f172a;
-  color: white;
-  font-weight: 500;
+  font-size: 1.125rem;
 }
 
 .percentage-form {
