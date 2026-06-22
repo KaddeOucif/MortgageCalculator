@@ -51,6 +51,8 @@
         <AmortizationChart 
           v-if="activeTab === 'amortization' && results" 
           :schedule="results.schedule"
+          :values="values"
+          :results="results"
         />
         
         <SavedCalculations 
