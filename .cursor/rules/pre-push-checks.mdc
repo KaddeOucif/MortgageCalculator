@@ -1,0 +1,30 @@
+---
+description: Require unit tests and CI checks before pushing changes that affect calculations or UI behavior.
+alwaysApply: true
+---
+
+# Pre-push quality gate
+
+Before committing or pushing changes in this repo:
+
+1. Run `npm test` — all unit tests must pass.
+2. Run `npm run build` — production build must succeed.
+3. Or run `npm run ci` to execute both.
+
+## When tests are required
+
+- Any change under `src/calculations/`, `src/utils/`, or `tests/`
+- Any change that alters mortgage math, payment scenarios, or investment comparison
+- UI changes that depend on calculation outputs (results display, charts, scenarios)
+
+## If behavior intentionally changes
+
+- Update the affected tests in `tests/` to match the new expected values.
+- Never delete tests to make CI pass without user approval.
+- Document why baseline values changed in the commit message.
+
+## Do not push when
+
+- `npm test` fails
+- `npm run build` fails
+- Calculation logic was modified without corresponding test updates

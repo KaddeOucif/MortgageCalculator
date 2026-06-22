@@ -5,7 +5,7 @@
       :results="results"
     />
     
-    <div class="view-toggle">
+    <div class="view-toggle segmented-control">
       <button 
         :class="{ active: activeView === 'scenarios' }" 
         @click="activeView = 'scenarios'"
@@ -202,12 +202,24 @@ export default {
   margin-top: 1.5rem;
 }
 
+.view-toggle {
+  margin: 1.5rem 0 1rem;
+}
+
 .scenario-card {
-  background: white;
-  border-radius: 0.5rem;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
   border-left: 4px solid #ddd;
-  padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.125rem;
+  border: 1px solid var(--color-border);
+  border-left-width: 4px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.scenario-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .scenario-title {
@@ -322,33 +334,5 @@ export default {
   border-left: 3px solid #10b981;
   color: #065f46;
   line-height: 1.4;
-}
-
-.view-toggle {
-  display: flex;
-  margin: 1.5rem 0 1rem;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  width: fit-content;
-  border: 1px solid #e2e8f0;
-}
-
-.view-toggle button {
-  padding: 0.5rem 1rem;
-  background-color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: all 0.2s;
-}
-
-.view-toggle button.active {
-  background-color: #3b82f6;
-  color: white;
-  font-weight: 500;
-}
-
-.view-toggle button:not(.active):hover {
-  background-color: #f1f5f9;
 }
 </style>

@@ -1,28 +1,33 @@
 <template>
-  <div class="results" v-if="results">
-    <h2>Monthly Payment Breakdown</h2>
-    <div class="result-item">
-      <span>Monthly Amortization:</span>
-      <span>{{ formatCurrency(results.monthlyAmortization) }} SEK</span>
+  <div class="results card" v-if="results">
+    <h2 class="card-title">Monthly Payment</h2>
+
+    <div class="payment-hero">
+      <span class="hero-label">Total with Brf Fee</span>
+      <span class="hero-value">{{ formatCurrency(totalWithBrf) }} <small>SEK</small></span>
+      <span class="hero-sub">Mortgage {{ formatCurrency(results.totalMonthlyPayment) }} + Brf {{ formatCurrency(values.brfFee) }}</span>
     </div>
-    <div class="result-item">
-      <span>Monthly Interest:</span>
-      <span>{{ formatCurrency(results.monthlyInterest) }} SEK</span>
+
+    <div class="result-list">
+      <div class="result-item">
+        <span class="result-label">Monthly Amortization</span>
+        <span class="result-value">{{ formatCurrency(results.monthlyAmortization) }} SEK</span>
+      </div>
+      <div class="result-item">
+        <span class="result-label">Monthly Interest</span>
+        <span class="result-value">{{ formatCurrency(results.monthlyInterest) }} SEK</span>
+      </div>
+      <div class="result-item">
+        <span class="result-label">Total Monthly Payment</span>
+        <span class="result-value">{{ formatCurrency(results.totalMonthlyPayment) }} SEK</span>
+      </div>
+      <div class="result-item accent">
+        <span class="result-label">Required Amortization Rate</span>
+        <span class="result-value">{{ results.amortizationRate.toFixed(1) }}%</span>
+      </div>
     </div>
-    <div class="result-item">
-      <span>Total Monthly Payment:</span>
-      <span>{{ formatCurrency(results.totalMonthlyPayment) }} SEK</span>
-    </div>
-    <div class="result-item">
-      <span>Total with Brf Fee:</span>
-      <span>{{ formatCurrency(totalWithBrf) }} SEK</span>
-    </div>
-    <div class="result-item">
-      <span>Required Amortization Rate:</span>
-      <span>{{ results.amortizationRate.toFixed(1) }}%</span>
-    </div>
-    
-    <button @click="saveCalculation" class="save-btn">
+
+    <button @click="saveCalculation" class="save-btn btn-primary">
       Save Calculation
     </button>
   </div>
@@ -59,32 +64,84 @@ export default {
 
 <style scoped>
 .results {
-  background: white;
   padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.payment-hero {
+  background: linear-gradient(135deg, var(--color-primary-soft) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1px solid rgba(79, 70, 229, 0.15);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.hero-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  margin-bottom: 0.375rem;
+}
+
+.hero-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  line-height: 1.1;
+}
+
+.hero-value small {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.hero-sub {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .result-item {
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
-  padding: 5px 0;
+  align-items: center;
+  padding: 0.625rem 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.875rem;
+}
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.result-item.accent .result-value {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.result-label {
+  color: var(--color-text-muted);
+}
+
+.result-value {
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 .save-btn {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: #0f172a;
-  color: white;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-weight: 500;
+  margin-top: 1.25rem;
   width: 100%;
-}
-
-.save-btn:hover {
-  background: #1e293b;
 }
 </style>

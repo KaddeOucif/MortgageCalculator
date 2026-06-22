@@ -236,11 +236,13 @@ export default {
 }
 
 .info-box {
-  background-color: #f8fafc;
-  border-radius: 0.5rem;
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-md);
   padding: 1rem 1.25rem;
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid var(--color-primary);
   margin-bottom: 1.25rem;
+  border: 1px solid rgba(79, 70, 229, 0.15);
+  border-left-width: 4px;
 }
 
 .info-box h3 {
@@ -270,13 +272,19 @@ export default {
 }
 
 .stat-card {
-  background: white;
-  border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1rem;
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  transition: box-shadow var(--transition);
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .stat-label {
@@ -300,9 +308,10 @@ export default {
 
 .chart-container {
   height: 450px;
-  background: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--color-bg-elevated);
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
 }
 </style>

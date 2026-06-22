@@ -1,0 +1,36 @@
+---
+description: Unit test conventions for mortgage calculation modules.
+globs: src/calculations/**/*.js,tests/**/*.js
+alwaysApply: false
+---
+
+# Calculation unit tests
+
+All logic in `src/calculations/` must have coverage in `tests/`.
+
+## Test file mapping
+
+| Source | Tests |
+|--------|-------|
+| `mortgageCalculator.js` | `tests/mortgageCalculator.test.js` |
+| `amortizationSchedule.js` | `tests/amortizationSchedule.test.js` |
+| `paymentScenarios.js` | `tests/paymentScenarios.test.js` |
+| `timeToPayoff.js` | `tests/timeToPayoff.test.js` |
+| `investmentComparison.js` | `tests/investmentComparison.test.js` |
+| `formatters.js` | `tests/formatters.test.js` |
+
+## Baseline scenarios to preserve
+
+Default app inputs (2M SEK loan, 3M property, 500k income, 3.5% rate, 30 years):
+
+- Monthly amortization ≈ 1,667 SEK
+- Monthly interest ≈ 5,833 SEK
+- Total monthly payment = 7,500 SEK
+- Amortization rate = 1%
+
+## Adding or changing calculations
+
+1. Write or update tests first when fixing bugs; update tests after when changing requirements.
+2. Use `toBeCloseTo` for floating-point money values.
+3. Assert structure (array lengths, required fields) in addition to numeric outputs.
+4. Run `npm test` before every push.
