@@ -6,3 +6,9 @@ export function formatCurrency(amount) {
   export function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString();
   }
+
+  export function formatPayoffDate(monthsFromNow) {
+    const date = new Date();
+    date.setMonth(date.getMonth() + monthsFromNow);
+    return date.toLocaleDateString('sv-SE', { year: 'numeric', month: 'long' });
+  }
