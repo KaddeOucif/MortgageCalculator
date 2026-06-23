@@ -1,7 +1,7 @@
 /**
  * Calculate comparison scenarios between paying extra on mortgage vs investing in stock market
  */
-export function calculateComparisonScenarios(scenarios, currentLoanAmount, interestRate, expectedReturn, accountType) {
+export function calculateComparisonScenarios(scenarios, currentLoanAmount, interestRate, expectedReturn, accountType, currency = 'SEK') {
   return scenarios.map(scenario => {
     // Get the extra payment amount
     const extraPayment = scenario.extra;
@@ -109,9 +109,9 @@ export function calculateComparisonScenarios(scenarios, currentLoanAmount, inter
     // Generate analysis text
     let analysis = '';
     if (winner === 'mortgage') {
-      analysis = `Paying an extra ${extraPayment} SEK per month on your mortgage would save you ${mortgageStrategy.interestSaved.toFixed(0)} SEK in interest and help you pay off your mortgage ${formatTimeSaved(mortgageStrategy.monthsSaved)} earlier. This strategy outperforms investing in the stock market by ${((mortgageNetWorth / investmentNetWorth - 1) * 100).toFixed(1)}% given the current interest rate and expected stock market returns.`;
+      analysis = `Paying an extra ${extraPayment} ${currency} per month on your mortgage would save you ${mortgageStrategy.interestSaved.toFixed(0)} ${currency} in interest and help you pay off your mortgage ${formatTimeSaved(mortgageStrategy.monthsSaved)} earlier. This strategy outperforms investing in the stock market by ${((mortgageNetWorth / investmentNetWorth - 1) * 100).toFixed(1)}% given the current interest rate and expected stock market returns.`;
     } else if (winner === 'investment') {
-      analysis = `Investing ${extraPayment} SEK per month in the stock market while making minimum mortgage payments would likely result in a higher net worth after ${years} years. The investment strategy outperforms the mortgage payoff strategy by ${((investmentNetWorth / mortgageNetWorth - 1) * 100).toFixed(1)}% assuming a ${expectedReturn}% annual return.`;
+      analysis = `Investing ${extraPayment} ${currency} per month in the stock market while making minimum mortgage payments would likely result in a higher net worth after ${years} years. The investment strategy outperforms the mortgage payoff strategy by ${((investmentNetWorth / mortgageNetWorth - 1) * 100).toFixed(1)}% assuming a ${expectedReturn}% annual return.`;
     } else {
       analysis = `Both strategies yield similar results after ${years} years. Paying extra on your mortgage offers guaranteed savings on interest, while investing offers potential for higher returns but with more risk. Consider your risk tolerance and financial goals when deciding.`;
     }

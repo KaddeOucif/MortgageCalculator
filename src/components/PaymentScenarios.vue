@@ -3,11 +3,13 @@
     <PercentageCalculator 
       :values="values" 
       :results="results"
+      :currency="currency"
     />
 
     <ExtraPaymentCalculator
       :values="values"
       :results="results"
+      :currency="currency"
     />
     
     <div class="view-toggle segmented-control">
@@ -35,7 +37,7 @@
         <div class="scenario-title">{{ scenario.label }}</div>
         <div class="scenario-detail">
           <span>Monthly Payment:</span>
-          <span>{{ formatCurrency(scenario.monthlyPayment) }} SEK</span>
+          <span>{{ formatMoney(scenario.monthlyPayment, currency) }}</span>
         </div>
         <div class="scenario-detail">
           <span>Time to Payoff:</span>
@@ -43,7 +45,7 @@
         </div>
         <div class="scenario-detail">
           <span>Interest Saved:</span>
-          <span>{{ formatCurrency(scenario.interestSaved) }} SEK</span>
+          <span>{{ formatMoney(scenario.interestSaved, currency) }}</span>
         </div>
         <div class="scenario-detail time-saved-section">
           <div class="time-saved-header" @click="toggleExplanation(index)">
@@ -70,17 +72,17 @@
               
               <div class="explanation-item">
                 <span class="item-label">Standard monthly payment:</span>
-                <span class="item-value">{{ formatCurrency(results.totalMonthlyPayment) }} SEK</span>
+                <span class="item-value">{{ formatMoney(results.totalMonthlyPayment, currency) }}</span>
               </div>
               
               <div class="explanation-item highlight">
                 <span class="item-label">Your new monthly payment:</span>
-                <span class="item-value">{{ formatCurrency(scenario.monthlyPayment) }} SEK</span>
+                <span class="item-value">{{ formatMoney(scenario.monthlyPayment, currency) }}</span>
               </div>
               
               <div class="explanation-item highlight">
                 <span class="item-label">Extra payment per month:</span>
-                <span class="item-value">{{ formatCurrency(scenario.monthlyPayment - results.totalMonthlyPayment) }} SEK</span>
+                <span class="item-value">{{ formatMoney(scenario.monthlyPayment - results.totalMonthlyPayment, currency) }}</span>
               </div>
               
               <div class="explanation-item">
@@ -89,7 +91,7 @@
               </div>
               
               <p class="advisor-tip">
-                <strong>Financial Advisor Tip:</strong> By paying an extra {{ formatCurrency(scenario.monthlyPayment - results.totalMonthlyPayment) }} SEK per month, you'll not only save {{ formatTimeSaved(scenario.monthsSaved) }} on your mortgage but also save approximately {{ formatCurrency(scenario.interestSaved) }} SEK in interest payments over the life of the loan.
+                <strong>Financial Advisor Tip:</strong> By paying an extra {{ formatMoney(scenario.monthlyPayment - results.totalMonthlyPayment, currency) }} per month, you'll not only save {{ formatTimeSaved(scenario.monthsSaved) }} on your mortgage but also save approximately {{ formatMoney(scenario.interestSaved, currency) }} in interest payments over the life of the loan.
               </p>
             </div>
           </div>
@@ -102,12 +104,13 @@
       :values="values"
       :results="results"
       :scenarios="scenarios"
+      :currency="currency"
     />
   </div>
 </template>
 
 <script>
-import { formatCurrency } from '../utils/formatters';
+import { formatMoney } from '../utils/formatters';
 import PercentageCalculator from './PercentageCalculator.vue';
 import ExtraPaymentCalculator from './ExtraPaymentCalculator.vue';
 import InvestmentComparison from './InvestmentComparison.vue';
@@ -129,6 +132,10 @@ export default {
     results: {
       type: Object,
       required: true
+    },
+    currency: {
+      type: String,
+      default: 'SEK'
     }
   },
   data() {
@@ -148,7 +155,7 @@ export default {
     }
   },
   methods: {
-    formatCurrency,
+    formatMoney,
     formatTimeSaved(months) {
       // Ensure we're working with a positive number
       const absoluteMonths = Math.abs(months);
@@ -173,7 +180,8 @@ export default {
       return calculateExtraPaymentScenarios(
         this.values.currentLoanAmount,
         this.results.totalMonthlyPayment,
-        this.values.interestRate
+        this.values.interestRate,
+        this.currency
       );
     }
   },

@@ -1,6 +1,23 @@
 // src/calculations/paymentScenarios.js
+import { convertAmount, getCurrencyConfig } from '../utils/currency';
+import { formatCurrency } from '../utils/formatters';
 
 const MAX_PAYOFF_MONTHS = 99 * 12;
+
+const PRESET_EXTRAS_SEK = [1000, 2000, 5000];
+
+function getPresetExtra(amountSek, currency) {
+  if (currency === 'EUR') {
+    return Math.round(convertAmount(amountSek, 'SEK', 'EUR'));
+  }
+
+  return amountSek;
+}
+
+function formatExtraLabel(amount, currency) {
+  const { symbol } = getCurrencyConfig(currency);
+  return `+${formatCurrency(amount, currency)} ${symbol}/month`;
+}
 
 export function calculateCustomExtraPayment(currentLoan, baseMonthlyPayment, extraPayment, interestRate) {
   const monthlyRate = interestRate / 100 / 12;
@@ -36,11 +53,20 @@ export function calculateCustomExtraPayment(currentLoan, baseMonthlyPayment, ext
   };
 }
 
-export function calculateExtraPaymentScenarios(currentLoan, baseMonthlyPayment, interestRate) {
+export function calculateExtraPaymentScenarios(currentLoan, baseMonthlyPayment, interestRate, currency = 'SEK') {
+  const presetScenarios = PRESET_EXTRAS_SEK.map((amountSek, index) => {
+    const colors = ['#4caf50', '#2196f3', '#9c27b0'];
+    const extra = getPresetExtra(amountSek, currency);
+
+    return {
+      extra,
+      label: formatExtraLabel(extra, currency),
+      color: colors[index]
+    };
+  });
+
   const scenarios = [
-    { extra: 1000, label: '+1,000 SEK/month', color: '#4caf50' },
-    { extra: 2000, label: '+2,000 SEK/month', color: '#2196f3' },
-    { extra: 5000, label: '+5,000 SEK/month', color: '#9c27b0' },
+    ...presetScenarios,
     { extra: baseMonthlyPayment * 0.5, label: '+50% payment', color: '#ff9800' },
     { extra: baseMonthlyPayment, label: 'Double payment', color: '#f44336' }
   ];

@@ -105,7 +105,7 @@
             <h5>Pay Extra on Mortgage</h5>
             <div class="result-item">
               <span>Total Interest Saved:</span>
-              <span class="value">{{ formatCurrency(scenario.mortgageStrategy.interestSaved) }} SEK</span>
+              <span class="value">{{ formatMoney(scenario.mortgageStrategy.interestSaved, currency) }}</span>
             </div>
             <div class="result-item">
               <span>Time Saved:</span>
@@ -118,7 +118,7 @@
             <div class="result-item highlight">
               <span>Net Worth at Payoff:</span>
               <div class="value-breakdown">
-                <span class="value">{{ formatCurrency(scenario.mortgageStrategy.netWorth) }} SEK</span>
+                <span class="value">{{ formatMoney(scenario.mortgageStrategy.netWorth, currency) }}</span>
                 <span class="breakdown">(Property value, mortgage paid off)</span>
               </div>
             </div>
@@ -128,11 +128,11 @@
             <h5>Invest in Stock Market</h5>
             <div class="result-item">
               <span>Investment Value:</span>
-              <span class="value">{{ formatCurrency(scenario.investmentStrategy.finalValue) }} SEK</span>
+              <span class="value">{{ formatMoney(scenario.investmentStrategy.finalValue, currency) }}</span>
             </div>
             <div class="result-item">
               <span>After Tax:</span>
-              <span class="value">{{ formatCurrency(scenario.investmentStrategy.afterTaxValue) }} SEK</span>
+              <span class="value">{{ formatMoney(scenario.investmentStrategy.afterTaxValue, currency) }}</span>
             </div>
             <div class="result-item">
               <span>Comparison Timeline:</span>
@@ -141,7 +141,7 @@
             <div class="result-item highlight">
               <span>Net Worth at Same Time:</span>
               <div class="value-breakdown">
-                <span class="value">{{ formatCurrency(scenario.investmentStrategy.netWorth) }} SEK</span>
+                <span class="value">{{ formatMoney(scenario.investmentStrategy.netWorth, currency) }}</span>
                 <span class="breakdown">(Investments only, mortgage remains)</span>
               </div>
             </div>
@@ -183,7 +183,7 @@
 </template>
 
 <script>
-import { formatCurrency } from '../utils/formatters';
+import { formatMoney } from '../utils/formatters';
 import { calculateComparisonScenarios } from '../calculations/investmentComparison';
 
 export default {
@@ -200,6 +200,10 @@ export default {
     scenarios: {
       type: Array,
       required: true
+    },
+    currency: {
+      type: String,
+      default: 'SEK'
     }
   },
   data() {
@@ -218,12 +222,13 @@ export default {
         this.values.currentLoanAmount,
         this.values.interestRate,
         this.expectedReturn,
-        this.accountType
+        this.accountType,
+        this.currency
       );
     }
   },
   methods: {
-    formatCurrency,
+    formatMoney,
     formatTimeSaved(months) {
       const absoluteMonths = Math.abs(months);
       const years = Math.floor(absoluteMonths / 12);

@@ -11,12 +11,22 @@ describe('calculateExtraPaymentScenarios', () => {
 
     expect(scenarios).toHaveLength(5);
     expect(scenarios.map(s => s.label)).toEqual([
-      '+1,000 SEK/month',
-      '+2,000 SEK/month',
-      '+5,000 SEK/month',
+      '+1\u00a0000 SEK/month',
+      '+2\u00a0000 SEK/month',
+      '+5\u00a0000 SEK/month',
       '+50% payment',
       'Double payment'
     ]);
+  });
+
+  it('returns EUR labels when currency is EUR', () => {
+    const eurLoan = Math.round(currentLoan / 11.5);
+    const eurBasePayment = Math.round(baseMonthlyPayment / 11.5);
+    const scenarios = calculateExtraPaymentScenarios(eurLoan, eurBasePayment, interestRate, 'EUR');
+
+    expect(scenarios[0].label).toBe('+87 EUR/month');
+    expect(scenarios[1].label).toBe('+174 EUR/month');
+    expect(scenarios[2].label).toBe('+435 EUR/month');
   });
 
   it('reduces payoff time for fixed extra-payment increments', () => {

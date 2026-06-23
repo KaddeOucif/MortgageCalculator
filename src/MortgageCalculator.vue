@@ -12,12 +12,24 @@
         </div>
         <h1 class="header-title">Mortgage Calculator</h1>
         <p class="header-subtitle">Calculate your mortgage payments, amortization requirements, and explore payment strategies.</p>
+        <div class="currency-toggle segmented-control">
+          <button
+            v-for="code in currencyOptions"
+            :key="code"
+            type="button"
+            :class="{ active: currency === code }"
+            @click="setCurrency(code)"
+          >
+            {{ code }}
+          </button>
+        </div>
       </div>
     </div>
     
     <div class="calculator-grid">
       <LoanInputs 
-        :values="values" 
+        :values="values"
+        :currency="currency"
         @update="updateValues" 
       />
       
@@ -25,6 +37,7 @@
         v-if="results"
         :results="results" 
         :values="values"
+        :currency="currency"
         @save="saveCurrentCalculation"
       />
     </div>
@@ -46,6 +59,7 @@
           v-if="activeTab === 'scenarios' && results" 
           :values="values" 
           :results="results"
+          :currency="currency"
         />
         
         <AmortizationChart 
@@ -53,6 +67,7 @@
           :schedule="results.schedule"
           :values="values"
           :results="results"
+          :currency="currency"
         />
         
         <SavedCalculations 
@@ -118,7 +133,8 @@
 </template>
 
 <script>
-import { formatCurrency } from './utils/formatters';
+import { formatMoney } from './utils/formatters';
+import { convertValuesCurrency } from './utils/currency';
 import { calculateMortgage } from './calculations/mortgageCalculator';
 import { saveCalculatorValues, loadCalculatorValues, saveCalculation, deleteCalculation, updateCalculation } from './services/storageServices';
 import { exportCalculation as exportCalc, parseImportedCalculation } from './services/exportService';
@@ -149,6 +165,8 @@ export default {
         loanTermYears: 30,
         brfFee: 3500
       },
+      currency: 'SEK',
+      currencyOptions: ['SEK', 'EUR'],
       results: null,
       activeTab: 'scenarios',
       tabs: [
@@ -164,17 +182,28 @@ export default {
     };
   },
   created() {
-    const savedValues = loadCalculatorValues();
-    if (savedValues) {
-      this.values = savedValues;
+    const saved = loadCalculatorValues();
+    if (saved) {
+      this.values = saved.values;
+      this.currency = saved.currency;
     }
     this.calculateResults();
   },
   methods: {
-    formatCurrency,
+    formatMoney,
+    setCurrency(newCurrency) {
+      if (newCurrency === this.currency) {
+        return;
+      }
+
+      this.values = convertValuesCurrency(this.values, this.currency, newCurrency);
+      this.currency = newCurrency;
+      saveCalculatorValues(this.values, this.currency);
+      this.calculateResults();
+    },
     updateValues(newValues) {
       this.values = newValues;
-      saveCalculatorValues(this.values);
+      saveCalculatorValues(this.values, this.currency);
       this.calculateResults();
     },
     calculateResults() {
@@ -197,6 +226,7 @@ export default {
         id: Date.now().toString(),
         name: calculationName,
         date: new Date().toISOString(),
+        currency: this.currency,
         ...this.values,
         monthlyPayment: this.results.totalMonthlyPayment
       };
@@ -207,6 +237,7 @@ export default {
       }
     },
     loadCalculation(calculation) {
+      this.currency = calculation.currency || 'SEK';
       this.values = {
         originalLoanAmount: calculation.originalLoanAmount,
         currentLoanAmount: calculation.currentLoanAmount,
@@ -217,7 +248,7 @@ export default {
         brfFee: calculation.brfFee || 0
       };
       
-      saveCalculatorValues(this.values);
+      saveCalculatorValues(this.values, this.currency);
       this.calculateResults();
     },
     renameCalculation(calculation) {
@@ -372,6 +403,11 @@ export default {
   margin: 0;
   line-height: 1.6;
   font-weight: 400;
+}
+
+.currency-toggle {
+  margin-top: 1.25rem;
+  width: fit-content;
 }
 
 .calculator-grid {

@@ -8,7 +8,7 @@
         <strong>remaining loan balance</strong> as it declines over the loan term.
       </p>
       <p class="info-note">
-        Based on a {{ formatCurrency(values.currentLoanAmount) }} SEK loan at
+        Based on a {{ formatMoney(values.currentLoanAmount, currency) }} loan at
         {{ values.interestRate }}% interest with a
         {{ results.amortizationRate.toFixed(1) }}% mandatory amortization rate.
       </p>
@@ -17,15 +17,15 @@
     <div class="summary-stats">
       <div class="stat-card">
         <span class="stat-label">Starting Loan</span>
-        <span class="stat-value">{{ formatCurrency(values.currentLoanAmount) }} SEK</span>
+        <span class="stat-value">{{ formatMoney(values.currentLoanAmount, currency) }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-label">Total Interest</span>
-        <span class="stat-value stat-interest">{{ formatCurrency(totalInterest) }} SEK</span>
+        <span class="stat-value stat-interest">{{ formatMoney(totalInterest, currency) }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-label">Total Principal</span>
-        <span class="stat-value stat-principal">{{ formatCurrency(totalPrincipal) }} SEK</span>
+        <span class="stat-value stat-principal">{{ formatMoney(totalPrincipal, currency) }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-label">Loan-Free Year</span>
@@ -41,11 +41,7 @@
 
 <script>
 import Chart from 'chart.js/auto';
-import { formatCurrency } from '../utils/formatters';
-
-function formatSek(value) {
-  return value.toLocaleString('sv-SE') + ' SEK';
-}
+import { formatMoney } from '../utils/formatters';
 
 export default {
   name: 'AmortizationChart',
@@ -61,6 +57,10 @@ export default {
     results: {
       type: Object,
       required: true
+    },
+    currency: {
+      type: String,
+      default: 'SEK'
     }
   },
   data() {
@@ -94,15 +94,17 @@ export default {
     }
   },
   methods: {
-    formatCurrency,
+    formatMoney,
     createChart() {
       const ctx = this.$refs.chart.getContext('2d');
+      const currency = this.currency;
 
       if (this.chart) {
         this.chart.destroy();
       }
 
       const years = this.schedule.map(item => `Year ${item.year}`);
+      const formatAxisValue = (value) => formatMoney(value, currency);
 
       this.chart = new Chart(ctx, {
         type: 'bar',
@@ -161,14 +163,14 @@ export default {
             tooltip: {
               callbacks: {
                 label(context) {
-                  return `${context.dataset.label}: ${formatSek(context.parsed.y)}`;
+                  return `${context.dataset.label}: ${formatAxisValue(context.parsed.y)}`;
                 },
                 footer(tooltipItems) {
                   const principal = tooltipItems.find(i => i.dataset.label === 'Principal');
                   const interest = tooltipItems.find(i => i.dataset.label === 'Interest');
                   if (principal && interest) {
                     const total = principal.parsed.y + interest.parsed.y;
-                    return `Annual payment: ${formatSek(total)}`;
+                    return `Annual payment: ${formatAxisValue(total)}`;
                   }
                   return '';
                 }
@@ -188,11 +190,11 @@ export default {
               position: 'left',
               title: {
                 display: true,
-                text: 'Annual Payment (SEK)'
+                text: `Annual Payment (${currency})`
               },
               ticks: {
                 callback(value) {
-                  return formatSek(value);
+                  return formatAxisValue(value);
                 }
               }
             },
@@ -204,11 +206,11 @@ export default {
               },
               title: {
                 display: true,
-                text: 'Remaining Balance (SEK)'
+                text: `Remaining Balance (${currency})`
               },
               ticks: {
                 callback(value) {
-                  return formatSek(value);
+                  return formatAxisValue(value);
                 }
               }
             }
@@ -225,6 +227,11 @@ export default {
         });
       },
       deep: true
+    },
+    currency() {
+      this.$nextTick(() => {
+        this.createChart();
+      });
     }
   }
 };

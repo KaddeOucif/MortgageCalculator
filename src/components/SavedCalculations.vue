@@ -19,8 +19,8 @@
         >
           <div class="saved-title">{{ calc.name }}</div>
           <div class="saved-details">
-            <div>Loan: {{ formatCurrency(calc.currentLoanAmount) }} SEK</div>
-            <div>Monthly: {{ formatCurrency(calc.monthlyPayment) }} SEK</div>
+            <div>Loan: {{ formatMoney(calc.currentLoanAmount, calc.currency || 'SEK') }}</div>
+            <div>Monthly: {{ formatMoney(calc.monthlyPayment, calc.currency || 'SEK') }}</div>
           </div>
           <div class="saved-actions">
             <button @click.stop="$emit('rename', calc)" class="action-btn">✏️</button>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { formatCurrency } from '../utils/formatters';
+import { formatMoney } from '../utils/formatters';
 import { getSavedCalculations } from '../services/storageServices';
 
 export default {
@@ -48,7 +48,7 @@ export default {
     this.loadSavedCalculations();
   },
   methods: {
-    formatCurrency,
+    formatMoney,
     loadSavedCalculations() {
       this.savedCalculations = getSavedCalculations();
     }

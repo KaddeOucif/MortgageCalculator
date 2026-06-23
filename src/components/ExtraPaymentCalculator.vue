@@ -6,13 +6,13 @@
     </p>
 
     <div class="form-group">
-      <label for="extraPayment">Extra Monthly Payment (SEK)</label>
+      <label for="extraPayment">Extra Monthly Payment ({{ currency }})</label>
       <input
         id="extraPayment"
         type="number"
         v-model.number="extraPayment"
         min="0"
-        step="100"
+        :step="currency === 'EUR' ? 10 : 100"
       >
     </div>
 
@@ -27,15 +27,15 @@
     <div v-else class="results-grid">
       <div class="result-card">
         <div class="result-title">New Monthly Payment</div>
-        <div class="result-value">{{ formatCurrency(customResult.monthlyPayment) }} SEK</div>
+        <div class="result-value">{{ formatMoney(customResult.monthlyPayment, currency) }}</div>
         <div class="result-subtitle">
-          Base {{ formatCurrency(results.totalMonthlyPayment) }} + extra {{ formatCurrency(extraPayment) }}
+          Base {{ formatMoney(results.totalMonthlyPayment, currency) }} + extra {{ formatMoney(extraPayment, currency) }}
         </div>
       </div>
 
       <div class="result-card highlight-success">
         <div class="result-title">Interest Saved</div>
-        <div class="result-value">{{ formatCurrency(customResult.interestSaved) }} SEK</div>
+        <div class="result-value">{{ formatMoney(customResult.interestSaved, currency) }}</div>
         <div class="result-subtitle">vs paying only the baseline monthly payment</div>
       </div>
 
@@ -58,7 +58,7 @@
 
 <script>
 import { calculateCustomExtraPayment } from '../calculations/paymentScenarios';
-import { formatCurrency, formatPayoffDate } from '../utils/formatters';
+import { formatMoney, formatPayoffDate } from '../utils/formatters';
 
 export default {
   name: 'ExtraPaymentCalculator',
@@ -70,6 +70,10 @@ export default {
     results: {
       type: Object,
       required: true
+    },
+    currency: {
+      type: String,
+      default: 'SEK'
     }
   },
   data() {
@@ -95,11 +99,11 @@ export default {
         return '';
       }
 
-      return formatPayoffDate(this.customResult.payoffMonths);
+      return formatPayoffDate(this.customResult.payoffMonths, this.currency);
     }
   },
   methods: {
-    formatCurrency,
+    formatMoney,
     formatTimeSaved(months) {
       const absoluteMonths = Math.abs(months);
       const years = Math.floor(absoluteMonths / 12);

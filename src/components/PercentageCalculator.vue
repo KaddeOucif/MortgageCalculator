@@ -60,7 +60,7 @@
             v-model.number="directLoanAmount" 
             :min="0" 
             :max="values.originalLoanAmount" 
-            :step="10000"
+            :step="amountStep"
           >
           <div class="input-with-unit">
             <input 
@@ -70,13 +70,13 @@
               :max="values.originalLoanAmount"
               class="amount-text-input"
             >
-            <span>SEK</span>
+            <span>{{ currency }}</span>
           </div>
         </div>
         
         <div class="loan-amount-display">
           <template v-if="calculatorMode === 'percentage'">
-            Loan amount: {{ formatCurrency(loanAmountToPayOff) }} SEK
+            Loan amount: {{ formatMoney(loanAmountToPayOff, currency) }}
           </template>
           <template v-else>
             Percentage: {{ calculatedPercentage.toFixed(1) }}% of original loan
@@ -87,11 +87,11 @@
       <div class="results-grid" v-if="calculatedResults">
         <div class="result-card">
           <div class="result-title">Monthly Payment</div>
-          <div class="result-value">{{ formatCurrency(totalMonthlyWithBrf) }} SEK</div>
+          <div class="result-value">{{ formatMoney(totalMonthlyWithBrf, currency) }}</div>
           <div class="result-subtitle">
             <template v-if="effectiveLoanAmount > 0">
-              Loan: {{ formatCurrency(calculatedResults.newMonthlyPayment) }}<br>
-              Brf: {{ formatCurrency(values.brfFee) }}
+              Loan: {{ formatMoney(calculatedResults.newMonthlyPayment, currency) }}<br>
+              Brf: {{ formatMoney(values.brfFee, currency) }}
             </template>
             <template v-else>
               Brf fee only
@@ -128,7 +128,7 @@
 
 <script>
 import { calculateTimeToPayoff } from '../calculations/timeToPayoff';
-import { formatCurrency } from '../utils/formatters';
+import { formatMoney } from '../utils/formatters';
 import { AMORTIZATION_RULES } from '../utils/constants';
 
 export default {
@@ -141,6 +141,10 @@ export default {
     results: {
       type: Object,
       required: true
+    },
+    currency: {
+      type: String,
+      default: 'SEK'
     }
   },
   data() {
@@ -175,6 +179,9 @@ export default {
     }
   },
   computed: {
+    amountStep() {
+      return this.currency === 'EUR' ? 1000 : 10000;
+    },
     loanToValuePercentage() {
       return (this.values.currentLoanAmount / this.values.originalLoanAmount) * 100;
     },
@@ -274,7 +281,7 @@ export default {
     }
   },
   methods: {
-    formatCurrency
+    formatMoney
   }
 };
 </script>

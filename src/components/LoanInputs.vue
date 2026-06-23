@@ -4,7 +4,7 @@
       <h2 class="card-title">Loan Details</h2>
       <div class="form-grid">
         <div class="form-group">
-          <label for="originalLoanAmount">Original Loan Amount (SEK)</label>
+          <label for="originalLoanAmount">Original Loan Amount ({{ currency }})</label>
           <input 
             type="number" 
             id="originalLoanAmount" 
@@ -15,7 +15,7 @@
         </div>
         
         <div class="form-group">
-          <label for="currentLoanAmount">Current Loan Amount (SEK)</label>
+          <label for="currentLoanAmount">Current Loan Amount ({{ currency }})</label>
           <input 
             type="number" 
             id="currentLoanAmount" 
@@ -26,7 +26,7 @@
         </div>
         
         <div class="form-group">
-          <label for="propertyValue">Property Value (SEK)</label>
+          <label for="propertyValue">Property Value ({{ currency }})</label>
           <input 
             type="number" 
             id="propertyValue" 
@@ -36,7 +36,7 @@
         </div>
         
         <div class="form-group">
-          <label for="annualIncome">Annual Income (SEK)</label>
+          <label for="annualIncome">Annual Income ({{ currency }})</label>
           <input 
             type="number" 
             id="annualIncome" 
@@ -67,7 +67,7 @@
         </div>
         
         <div class="form-group">
-          <label for="brfFee">Brf Fee (SEK/month)</label>
+          <label for="brfFee">Brf Fee ({{ currency }}/month)</label>
           <input 
             type="number" 
             id="brfFee" 
@@ -86,6 +86,10 @@
       values: {
         type: Object,
         required: true
+      },
+      currency: {
+        type: String,
+        default: 'SEK'
       }
     },
     data() {
@@ -103,14 +107,12 @@
     },
     methods: {
       handleOriginalLoanChange() {
-        // Ensure current loan doesn't exceed original loan
         if (this.localValues.currentLoanAmount > this.localValues.originalLoanAmount) {
           this.localValues.currentLoanAmount = this.localValues.originalLoanAmount;
         }
         this.emitUpdate();
       },
       handleCurrentLoanChange() {
-        // Ensure current loan doesn't exceed original loan
         if (this.localValues.currentLoanAmount > this.localValues.originalLoanAmount) {
           this.localValues.currentLoanAmount = this.localValues.originalLoanAmount;
         }
@@ -130,11 +132,36 @@
   
   .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1.125rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .form-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   
   .form-group {
-    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  label {
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+  
+  input {
+    padding: 0.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+  }
+  
+  .tooltip-hint {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
   }
   </style>

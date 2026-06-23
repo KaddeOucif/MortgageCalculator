@@ -4,22 +4,22 @@
 
     <div class="payment-hero">
       <span class="hero-label">Total with Brf Fee</span>
-      <span class="hero-value">{{ formatCurrency(totalWithBrf) }} <small>SEK</small></span>
-      <span class="hero-sub">Mortgage {{ formatCurrency(results.totalMonthlyPayment) }} + Brf {{ formatCurrency(values.brfFee) }}</span>
+      <span class="hero-value">{{ formatMoney(totalWithBrf, currency) }}</span>
+      <span class="hero-sub">Mortgage {{ formatMoney(results.totalMonthlyPayment, currency) }} + Brf {{ formatMoney(values.brfFee, currency) }}</span>
     </div>
 
     <div class="result-list">
       <div class="result-item">
         <span class="result-label">Monthly Amortization</span>
-        <span class="result-value">{{ formatCurrency(results.monthlyAmortization) }} SEK</span>
+        <span class="result-value">{{ formatMoney(results.monthlyAmortization, currency) }}</span>
       </div>
       <div class="result-item">
         <span class="result-label">Monthly Interest</span>
-        <span class="result-value">{{ formatCurrency(results.monthlyInterest) }} SEK</span>
+        <span class="result-value">{{ formatMoney(results.monthlyInterest, currency) }}</span>
       </div>
       <div class="result-item">
         <span class="result-label">Total Monthly Payment</span>
-        <span class="result-value">{{ formatCurrency(results.totalMonthlyPayment) }} SEK</span>
+        <span class="result-value">{{ formatMoney(results.totalMonthlyPayment, currency) }}</span>
       </div>
       <div class="result-item accent">
         <span class="result-label">Required Amortization Rate</span>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { formatCurrency } from '../utils/formatters';
+import { formatMoney } from '../utils/formatters';
 
 export default {
   name: 'ResultsDisplay',
@@ -46,6 +46,10 @@ export default {
     values: {
       type: Object,
       required: true
+    },
+    currency: {
+      type: String,
+      default: 'SEK'
     }
   },
   computed: {
@@ -54,7 +58,7 @@ export default {
     }
   },
   methods: {
-    formatCurrency,
+    formatMoney,
     saveCalculation() {
       this.$emit('save');
     }
@@ -92,12 +96,6 @@ export default {
   letter-spacing: -0.03em;
   color: var(--color-text);
   line-height: 1.1;
-}
-
-.hero-value small {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--color-text-muted);
 }
 
 .hero-sub {
