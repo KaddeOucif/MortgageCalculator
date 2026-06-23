@@ -1,4 +1,5 @@
 // src/calculations/mortgageCalculator.js
+// Core Swedish mortgage calculation: LTV amortization, DTI surcharge, stress test.
 import { AMORTIZATION_RULES, DEBT_TO_INCOME_LIMIT, STRESS_TEST_RATE_INCREASE, MIN_INTEREST_RATE } from '../utils/constants';
 import { calculateAmortizationSchedule } from './amortizationSchedule';
 

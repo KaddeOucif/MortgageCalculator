@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { calculateMortgage } from '../src/calculations/mortgageCalculator.js';
 
+// Validates calculateMortgage baseline scenarios and LTV edge cases.
 describe('calculateMortgage', () => {
   const defaultInputs = [
     2_000_000, // originalLoanAmount
