@@ -42,7 +42,7 @@
       <div class="result-card">
         <div class="result-title">New Payoff Date</div>
         <div class="result-value">{{ payoffDate }}</div>
-        <div class="result-subtitle">({{ formatTimeSaved(customResult.monthsSaved) }} from now)</div>
+        <div class="result-subtitle">({{ formatTimeSaved(customResult.payoffMonths) }} from now)</div>
       </div>
 
       <div class="result-card">
