@@ -4,6 +4,11 @@
       :values="values" 
       :results="results"
     />
+
+    <ExtraPaymentCalculator
+      :values="values"
+      :results="results"
+    />
     
     <div class="view-toggle segmented-control">
       <button 
@@ -104,6 +109,7 @@
 <script>
 import { formatCurrency } from '../utils/formatters';
 import PercentageCalculator from './PercentageCalculator.vue';
+import ExtraPaymentCalculator from './ExtraPaymentCalculator.vue';
 import InvestmentComparison from './InvestmentComparison.vue';
 import { calculateExtraPaymentScenarios } from '../calculations/paymentScenarios';
 import { ref, reactive } from 'vue'; // Import Vue 3 reactivity APIs
@@ -112,6 +118,7 @@ export default {
   name: 'PaymentScenarios',
   components: {
     PercentageCalculator,
+    ExtraPaymentCalculator,
     InvestmentComparison
   },
   props: {
