@@ -408,6 +408,25 @@ export default {
 .currency-toggle {
   margin-top: 1.25rem;
   width: fit-content;
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(8px);
+}
+
+.currency-toggle button {
+  color: rgba(255, 255, 255, 0.9);
+  min-width: 4rem;
+}
+
+.currency-toggle button.active {
+  color: var(--color-text);
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+}
+
+.currency-toggle button:hover:not(.active) {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .calculator-grid {
