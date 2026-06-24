@@ -1,0 +1,10 @@
+{
+  "install": "npm install",
+  "terminals": [
+    {
+      "name": "Vite dev server",
+      "command": "npm run dev",
+      "ports": [5173]
+    }
+  ]
+}

@@ -128,6 +128,8 @@
   <style scoped>
   .loan-inputs {
     padding: 1.5rem;
+    border-top: 4px solid transparent;
+    border-image: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-violet)) 1;
   }
   
   .form-grid {

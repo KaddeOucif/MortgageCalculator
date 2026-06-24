@@ -69,11 +69,13 @@ export default {
 <style scoped>
 .results {
   padding: 1.5rem;
+  border-top: 4px solid transparent;
+  border-image: linear-gradient(90deg, var(--color-accent), var(--color-primary), var(--color-rose)) 1;
 }
 
 .payment-hero {
-  background: linear-gradient(135deg, var(--color-primary-soft) 0%, rgba(6, 182, 212, 0.08) 100%);
-  border: 1px solid rgba(79, 70, 229, 0.15);
+  background: linear-gradient(135deg, var(--color-primary-soft) 0%, var(--color-accent-soft) 50%, var(--color-violet-soft) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.2);
   border-radius: var(--radius-md);
   padding: 1.25rem 1.5rem;
   margin-bottom: 1.25rem;
@@ -94,7 +96,10 @@ export default {
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: var(--color-text);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-violet) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   line-height: 1.1;
 }
 
@@ -115,18 +120,30 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.625rem 0;
-  border-bottom: 1px solid var(--color-border);
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius-sm);
   font-size: 0.875rem;
 }
 
-.result-item:last-child {
-  border-bottom: none;
+.result-item:nth-child(1) {
+  background: var(--color-sky-soft);
+}
+
+.result-item:nth-child(2) {
+  background: var(--color-amber-soft);
+}
+
+.result-item:nth-child(3) {
+  background: var(--color-accent-soft);
+}
+
+.result-item.accent {
+  background: var(--color-violet-soft);
 }
 
 .result-item.accent .result-value {
-  color: var(--color-primary);
-  font-weight: 600;
+  color: var(--color-violet);
+  font-weight: 700;
 }
 
 .result-label {

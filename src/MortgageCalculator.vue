@@ -334,7 +334,7 @@ export default {
   padding: 2.5rem 2rem;
   border-radius: var(--radius-xl);
   margin-bottom: 1.75rem;
-  background: linear-gradient(135deg, #312e81 0%, #4f46e5 45%, #6366f1 100%);
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 30%, #8b5cf6 60%, #14b8a6 100%);
   box-shadow: var(--shadow-lg);
 }
 
@@ -355,9 +355,9 @@ export default {
   position: absolute;
   bottom: -30%;
   left: -5%;
-  width: 240px;
-  height: 240px;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.25) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -482,9 +482,10 @@ export default {
 }
 
 .tab-button.active {
-  color: var(--color-text);
-  background: var(--color-bg-elevated);
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
   box-shadow: var(--shadow-sm);
+  font-weight: 600;
 }
 
 .tab-content {

@@ -232,6 +232,22 @@ export default {
   transition: box-shadow var(--transition), transform var(--transition);
 }
 
+.scenario-card:nth-child(1) {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.06) 0%, var(--color-bg-elevated) 100%);
+}
+
+.scenario-card:nth-child(2) {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, var(--color-bg-elevated) 100%);
+}
+
+.scenario-card:nth-child(3) {
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.06) 0%, var(--color-bg-elevated) 100%);
+}
+
+.scenario-card:nth-child(4) {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, var(--color-bg-elevated) 100%);
+}
+
 .scenario-card:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
@@ -241,7 +257,8 @@ export default {
   font-weight: 600;
   margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
 }
 
 .scenario-detail {
@@ -263,13 +280,13 @@ export default {
   cursor: pointer;
   padding: 8px;
   transition: background-color 0.2s;
-  border-radius: 4px;
-  background-color: #f1f5f9;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-soft);
   margin-top: 4px;
 }
 
 .time-saved-header:hover {
-  background-color: #e2e8f0;
+  background: var(--color-violet-soft);
 }
 
 .time-saved-label {
