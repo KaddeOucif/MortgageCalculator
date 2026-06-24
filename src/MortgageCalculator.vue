@@ -17,17 +17,14 @@
     
     <div class="calculator-grid">
       <LoanInputs 
-        :values="values"
-        :currency="currency"
-        @update="updateValues"
-        @update:currency="setCurrency"
+        :values="values" 
+        @update="updateValues" 
       />
       
       <ResultsDisplay 
         v-if="results"
         :results="results" 
         :values="values"
-        :currency="currency"
         @save="saveCurrentCalculation"
       />
     </div>
@@ -122,7 +119,6 @@
 
 <script>
 import { formatCurrency } from './utils/formatters';
-import { CURRENCIES } from './utils/currency';
 import { calculateMortgage } from './calculations/mortgageCalculator';
 import { saveCalculatorValues, loadCalculatorValues, saveCalculation, deleteCalculation, updateCalculation } from './services/storageServices';
 import { exportCalculation as exportCalc, parseImportedCalculation } from './services/exportService';
@@ -153,7 +149,6 @@ export default {
         loanTermYears: 30,
         brfFee: 3500
       },
-      currency: CURRENCIES.SEK,
       results: null,
       activeTab: 'scenarios',
       tabs: [
@@ -169,10 +164,9 @@ export default {
     };
   },
   created() {
-    const saved = loadCalculatorValues();
-    if (saved) {
-      this.values = saved.values;
-      this.currency = saved.currency || CURRENCIES.SEK;
+    const savedValues = loadCalculatorValues();
+    if (savedValues) {
+      this.values = savedValues;
     }
     this.calculateResults();
   },
@@ -180,12 +174,8 @@ export default {
     formatCurrency,
     updateValues(newValues) {
       this.values = newValues;
-      saveCalculatorValues(this.values, this.currency);
+      saveCalculatorValues(this.values);
       this.calculateResults();
-    },
-    setCurrency(newCurrency) {
-      this.currency = newCurrency;
-      saveCalculatorValues(this.values, this.currency);
     },
     calculateResults() {
       if (!this.values.currentLoanAmount || !this.values.propertyValue) return;
@@ -227,7 +217,7 @@ export default {
         brfFee: calculation.brfFee || 0
       };
       
-      saveCalculatorValues(this.values, this.currency);
+      saveCalculatorValues(this.values);
       this.calculateResults();
     },
     renameCalculation(calculation) {

@@ -4,42 +4,27 @@
 
     <div class="payment-hero">
       <span class="hero-label">Total with Brf Fee</span>
-      <span class="hero-value">
-        {{ formatCurrency(displayTotalWithBrf) }}
-        <small>{{ currency }}</small>
-      </span>
-      <span class="hero-sub">
-        Mortgage {{ formatCurrency(displayMonthlyPayment) }} + Brf {{ formatCurrency(displayBrfFee) }}
-      </span>
+      <span class="hero-value">{{ formatCurrency(totalWithBrf) }} <small>SEK</small></span>
+      <span class="hero-sub">Mortgage {{ formatCurrency(results.totalMonthlyPayment) }} + Brf {{ formatCurrency(values.brfFee) }}</span>
     </div>
 
-    <div class="stat-grid">
-      <div class="stat-card stat-card--success">
-        <span class="stat-card-label">Monthly Amortization</span>
-        <span class="stat-card-value">
-          {{ formatCurrency(displayAmortization) }}
-          <small>{{ currency }}</small>
-        </span>
+    <div class="result-list">
+      <div class="result-item">
+        <span class="result-label">Monthly Amortization</span>
+        <span class="result-value">{{ formatCurrency(results.monthlyAmortization) }} SEK</span>
       </div>
-      <div class="stat-card stat-card--warning">
-        <span class="stat-card-label">Monthly Interest</span>
-        <span class="stat-card-value">
-          {{ formatCurrency(displayInterest) }}
-          <small>{{ currency }}</small>
-        </span>
+      <div class="result-item">
+        <span class="result-label">Monthly Interest</span>
+        <span class="result-value">{{ formatCurrency(results.monthlyInterest) }} SEK</span>
       </div>
-      <div class="stat-card stat-card--primary">
-        <span class="stat-card-label">Total Monthly Payment</span>
-        <span class="stat-card-value">
-          {{ formatCurrency(displayMonthlyPayment) }}
-          <small>{{ currency }}</small>
-        </span>
+      <div class="result-item">
+        <span class="result-label">Total Monthly Payment</span>
+        <span class="result-value">{{ formatCurrency(results.totalMonthlyPayment) }} SEK</span>
       </div>
-    </div>
-
-    <div class="result-item accent">
-      <span class="result-label">Required Amortization Rate</span>
-      <span class="result-value">{{ results.amortizationRate.toFixed(1) }}%</span>
+      <div class="result-item accent">
+        <span class="result-label">Required Amortization Rate</span>
+        <span class="result-value">{{ results.amortizationRate.toFixed(1) }}%</span>
+      </div>
     </div>
 
     <button @click="saveCalculation" class="save-btn btn-primary">
@@ -50,49 +35,30 @@
 
 <script>
 import { formatCurrency } from '../utils/formatters';
-import { toDisplayAmount, CURRENCIES } from '../utils/currency.js';
 
 export default {
   name: 'ResultsDisplay',
   props: {
     results: {
       type: Object,
-      required: true,
+      required: true
     },
     values: {
       type: Object,
-      required: true,
-    },
-    currency: {
-      type: String,
-      default: CURRENCIES.SEK,
-    },
+      required: true
+    }
   },
   computed: {
-    displayMonthlyPayment() {
-      return toDisplayAmount(this.results.totalMonthlyPayment, this.currency);
-    },
-    displayAmortization() {
-      return toDisplayAmount(this.results.monthlyAmortization, this.currency);
-    },
-    displayInterest() {
-      return toDisplayAmount(this.results.monthlyInterest, this.currency);
-    },
-    displayBrfFee() {
-      return toDisplayAmount(this.values.brfFee, this.currency);
-    },
-    displayTotalWithBrf() {
-      return this.displayMonthlyPayment + this.displayBrfFee;
-    },
+    totalWithBrf() {
+      return this.results.totalMonthlyPayment + this.values.brfFee;
+    }
   },
   methods: {
-    formatCurrency(amount) {
-      return formatCurrency(amount, this.currency);
-    },
+    formatCurrency,
     saveCalculation() {
       this.$emit('save');
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -102,25 +68,11 @@ export default {
 }
 
 .payment-hero {
-  background: linear-gradient(135deg, #312e81 0%, #4f46e5 45%, #6366f1 100%);
-  border: none;
+  background: linear-gradient(135deg, var(--color-primary-soft) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1px solid rgba(79, 70, 229, 0.15);
   border-radius: var(--radius-md);
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   margin-bottom: 1.25rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.payment-hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
 }
 
 .hero-label {
@@ -129,44 +81,49 @@ export default {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--color-primary);
   margin-bottom: 0.375rem;
-  position: relative;
 }
 
 .hero-value {
   display: block;
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: white;
+  color: var(--color-text);
   line-height: 1.1;
-  position: relative;
 }
 
 .hero-value small {
   font-size: 1rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-text-muted);
 }
 
 .hero-sub {
   display: block;
   margin-top: 0.5rem;
   font-size: 0.8125rem;
-  color: rgba(255, 255, 255, 0.65);
-  position: relative;
+  color: var(--color-text-muted);
+}
+
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .result-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.875rem 1rem;
-  background: var(--color-surface-muted);
-  border-radius: var(--radius-sm);
+  padding: 0.625rem 0;
+  border-bottom: 1px solid var(--color-border);
   font-size: 0.875rem;
-  margin-bottom: 1.25rem;
+}
+
+.result-item:last-child {
+  border-bottom: none;
 }
 
 .result-item.accent .result-value {
@@ -184,6 +141,7 @@ export default {
 }
 
 .save-btn {
+  margin-top: 1.25rem;
   width: 100%;
 }
 </style>
