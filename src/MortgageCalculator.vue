@@ -1,12 +1,15 @@
 <template>
   <div class="mortgage-calculator">
     <div class="header">
-      <div class="header-mesh" aria-hidden="true">
-        <span class="mesh-orb mesh-orb--1"></span>
-        <span class="mesh-orb mesh-orb--2"></span>
-        <span class="mesh-orb mesh-orb--3"></span>
-      </div>
       <div class="header-content">
+        <div class="header-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 22h20"></path>
+            <path d="M3 9l9-7 9 7v13H3V9z"></path>
+            <path d="M9 22V12h6v10"></path>
+          </svg>
+          Mortgage
+        </div>
         <h1 class="header-title">Mortgage Calculator</h1>
         <p class="header-subtitle">Calculate your mortgage payments, amortization requirements, and explore payment strategies.</p>
       </div>
@@ -297,87 +300,35 @@ export default {
   position: relative;
   overflow: hidden;
   color: white;
-  padding: 3rem 2.25rem;
+  padding: 2.5rem 2rem;
   border-radius: var(--radius-xl);
   margin-bottom: 1.75rem;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    radial-gradient(ellipse 90% 70% at 15% 50%, rgba(6, 182, 212, 0.55) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 90% at 85% 15%, rgba(168, 85, 247, 0.5) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 60% at 70% 85%, rgba(99, 102, 241, 0.45) 0%, transparent 55%),
-    radial-gradient(ellipse 40% 40% at 50% 30%, rgba(236, 72, 153, 0.15) 0%, transparent 60%),
-    linear-gradient(135deg, #0f172a 0%, #1e1b4b 22%, #312e81 45%, #4338ca 68%, #5b21b6 100%);
-  background-size: 48px 48px, 48px 48px, auto, auto, auto, auto, auto;
-  box-shadow:
-    var(--shadow-lg),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, #312e81 0%, #4f46e5 45%, #6366f1 100%);
+  box-shadow: var(--shadow-lg);
 }
 
 .header::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.06) 50%,
-    transparent 60%
-  );
+  top: -40%;
+  right: -10%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
   pointer-events: none;
 }
 
 .header::after {
   content: '';
   position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.1) 0%, transparent 45%);
-  pointer-events: none;
-}
-
-.header-mesh {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.mesh-orb {
-  position: absolute;
+  bottom: -30%;
+  left: -5%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
   border-radius: 50%;
-  filter: blur(1px);
-}
-
-.mesh-orb--1 {
-  top: -20%;
-  right: 8%;
-  width: 280px;
-  height: 280px;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.35) 0%, transparent 70%);
-  animation: mesh-float 12s ease-in-out infinite;
-}
-
-.mesh-orb--2 {
-  bottom: -35%;
-  right: 25%;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
-  animation: mesh-float 15s ease-in-out infinite reverse;
-}
-
-.mesh-orb--3 {
-  top: 10%;
-  right: 35%;
-  width: 140px;
-  height: 140px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
-  animation: mesh-float 10s ease-in-out infinite 2s;
-}
-
-@keyframes mesh-float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-8px, 6px) scale(1.04); }
+  pointer-events: none;
 }
 
 .header-content {
@@ -386,23 +337,41 @@ export default {
   max-width: 640px;
 }
 
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-badge svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-right: 0.5rem;
+  opacity: 0.9;
+}
+
 .header-title {
-  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  margin: 0 0 0.75rem 0;
-  line-height: 1.12;
+  margin: 0 0 0.625rem 0;
+  line-height: 1.15;
   color: inherit;
-  text-shadow: 0 2px 16px rgba(15, 23, 42, 0.25);
 }
 
 .header-subtitle {
-  font-size: 1.0625rem;
-  opacity: 0.9;
+  font-size: 1rem;
+  opacity: 0.88;
   margin: 0;
-  line-height: 1.65;
+  line-height: 1.6;
   font-weight: 400;
-  max-width: 52ch;
 }
 
 .calculator-grid {
