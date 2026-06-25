@@ -12,7 +12,7 @@
         type="number"
         v-model.number="extraPayment"
         min="0"
-        :step="currency === 'EUR' ? 10 : 100"
+        :step="currency === 'SEK' ? 100 : 10"
       >
     </div>
 

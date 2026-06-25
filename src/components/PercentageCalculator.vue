@@ -180,7 +180,7 @@ export default {
   },
   computed: {
     amountStep() {
-      return this.currency === 'EUR' ? 1000 : 10000;
+      return this.currency === 'SEK' ? 10000 : 1000;
     },
     loanToValuePercentage() {
       return (this.values.currentLoanAmount / this.values.originalLoanAmount) * 100;
