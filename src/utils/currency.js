@@ -1,9 +1,17 @@
 export const CURRENCIES = {
   SEK: { code: 'SEK', locale: 'sv-SE', symbol: 'SEK' },
   EUR: { code: 'EUR', locale: 'de-DE', symbol: 'EUR' },
+  GBP: { code: 'GBP', locale: 'en-GB', symbol: 'GBP' },
 };
 
 export const EUR_SEK_RATE = 11.5; // 1 EUR = 11.5 SEK
+export const GBP_SEK_RATE = 13.2; // 1 GBP = 13.2 SEK
+
+const RATES_TO_SEK = {
+  SEK: 1,
+  EUR: EUR_SEK_RATE,
+  GBP: GBP_SEK_RATE,
+};
 
 const MONETARY_FIELDS = [
   'originalLoanAmount',
@@ -22,22 +30,11 @@ export function convertAmount(amount, from, to) {
     return amount;
   }
 
-  if (from === 'SEK' && to === 'EUR') {
-    return amount / EUR_SEK_RATE;
-  }
-
-  if (from === 'EUR' && to === 'SEK') {
-    return amount * EUR_SEK_RATE;
-  }
-
-  return amount;
+  const amountInSek = amount * RATES_TO_SEK[from];
+  return amountInSek / RATES_TO_SEK[to];
 }
 
 export function roundMonetaryAmount(amount, currency = 'SEK') {
-  if (currency === 'EUR') {
-    return Math.round(amount);
-  }
-
   return Math.round(amount);
 }
 
