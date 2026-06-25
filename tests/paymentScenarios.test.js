@@ -29,6 +29,16 @@ describe('calculateExtraPaymentScenarios', () => {
     expect(scenarios[2].label).toBe('+435 EUR/month');
   });
 
+  it('returns GBP labels when currency is GBP', () => {
+    const gbpLoan = Math.round(currentLoan / 13.2);
+    const gbpBasePayment = Math.round(baseMonthlyPayment / 13.2);
+    const scenarios = calculateExtraPaymentScenarios(gbpLoan, gbpBasePayment, interestRate, 'GBP');
+
+    expect(scenarios[0].label).toBe('+76 GBP/month');
+    expect(scenarios[1].label).toBe('+152 GBP/month');
+    expect(scenarios[2].label).toBe('+379 GBP/month');
+  });
+
   it('reduces payoff time for fixed extra-payment increments', () => {
     const scenarios = calculateExtraPaymentScenarios(currentLoan, baseMonthlyPayment, interestRate);
     const fixedIncrements = scenarios.slice(0, 3);
