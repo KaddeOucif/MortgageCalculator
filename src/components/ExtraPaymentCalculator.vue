@@ -12,7 +12,7 @@
         type="number"
         v-model.number="extraPayment"
         min="0"
-        :step="currency === 'EUR' ? 10 : 100"
+        :step="usesCompactInputSteps(currency) ? 10 : 100"
       >
     </div>
 
@@ -59,6 +59,7 @@
 <script>
 import { calculateCustomExtraPayment } from '../calculations/paymentScenarios';
 import { formatMoney, formatPayoffDate } from '../utils/formatters';
+import { usesCompactInputSteps } from '../utils/currency';
 
 export default {
   name: 'ExtraPaymentCalculator',
@@ -104,6 +105,7 @@ export default {
   },
   methods: {
     formatMoney,
+    usesCompactInputSteps,
     formatTimeSaved(months) {
       const absoluteMonths = Math.abs(months);
       const years = Math.floor(absoluteMonths / 12);
