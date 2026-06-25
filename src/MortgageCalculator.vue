@@ -166,7 +166,7 @@ export default {
         brfFee: 3500
       },
       currency: 'SEK',
-      currencyOptions: ['SEK', 'EUR'],
+      currencyOptions: ['SEK', 'GBP'],
       results: null,
       activeTab: 'scenarios',
       tabs: [

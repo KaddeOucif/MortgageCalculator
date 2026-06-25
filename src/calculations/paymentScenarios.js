@@ -7,11 +7,11 @@ const MAX_PAYOFF_MONTHS = 99 * 12;
 const PRESET_EXTRAS_SEK = [1000, 2000, 5000];
 
 function getPresetExtra(amountSek, currency) {
-  if (currency === 'EUR') {
-    return Math.round(convertAmount(amountSek, 'SEK', 'EUR'));
+  if (currency === 'SEK') {
+    return amountSek;
   }
 
-  return amountSek;
+  return Math.round(convertAmount(amountSek, 'SEK', currency));
 }
 
 function formatExtraLabel(amount, currency) {

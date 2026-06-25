@@ -19,6 +19,16 @@ describe('calculateExtraPaymentScenarios', () => {
     ]);
   });
 
+  it('returns GBP labels when currency is GBP', () => {
+    const gbpLoan = Math.round(currentLoan / 13.5);
+    const gbpBasePayment = Math.round(baseMonthlyPayment / 13.5);
+    const scenarios = calculateExtraPaymentScenarios(gbpLoan, gbpBasePayment, interestRate, 'GBP');
+
+    expect(scenarios[0].label).toBe('+74 GBP/month');
+    expect(scenarios[1].label).toBe('+148 GBP/month');
+    expect(scenarios[2].label).toBe('+370 GBP/month');
+  });
+
   it('returns EUR labels when currency is EUR', () => {
     const eurLoan = Math.round(currentLoan / 11.5);
     const eurBasePayment = Math.round(baseMonthlyPayment / 11.5);

@@ -129,6 +129,7 @@
 <script>
 import { calculateTimeToPayoff } from '../calculations/timeToPayoff';
 import { formatMoney } from '../utils/formatters';
+import { usesCompactInputSteps } from '../utils/currency';
 import { AMORTIZATION_RULES } from '../utils/constants';
 
 export default {
@@ -180,7 +181,7 @@ export default {
   },
   computed: {
     amountStep() {
-      return this.currency === 'EUR' ? 1000 : 10000;
+      return usesCompactInputSteps(this.currency) ? 1000 : 10000;
     },
     loanToValuePercentage() {
       return (this.values.currentLoanAmount / this.values.originalLoanAmount) * 100;
